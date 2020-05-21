@@ -1,0 +1,33 @@
+{
+  "name": "i-lateral/silverstripe-fancy-form-scaffolder",
+  "description": "Allows you to defined CMS form structure via config.yml",
+    "type": "silverstripe-vendormodule",
+    "homepage": "https://github.com/i-lateral/silverstripe-fancy-form-scaffolder",
+    "keywords": [
+        "silverstripe",
+        "admin",
+        "Forms",
+        "Scaffold"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "ilateral",
+            "email": "info@ilateral.co.uk"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/i-lateral/silverstripe-fancy-form-scaffolder/issues"
+    },
+    "require": {
+        "silverstripe/framework": ">=4.2",
+        "silverstripe/admin": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ilateral\\SilverStripe\\FancyFormScaffolder\\": "src/",
+            "ilateral\\SilverStripe\\FancyFormScaffolder\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev"
+}
