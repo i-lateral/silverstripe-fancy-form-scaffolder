@@ -1,0 +1,6 @@
+---
+Name: fancyscaffolder
+---
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Forms\FormScaffolder:
+    class: ilateral\SilverStripe\FancyFormScaffolder\FormScaffolder
