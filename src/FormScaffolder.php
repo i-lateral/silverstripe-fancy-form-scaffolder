@@ -79,28 +79,23 @@ class FormScaffolder extends CMSFormScaffolder
                 $this->curr_tab = $key;
             }
 
-            // Are we currently setting a heading
-            if (in_array(strtolower($key), self::HEADING_LEVELS)) {
-                $fields = $this->addField(
-                    $this->createHeadingField($key, $value),
-                    $fields
-                );
-            }
-
             // If we have an instance of a Composite field, then add fields
-            if (is_a($key, CompositeField::class, true) && is_array($value) && isset($value['fields'])) {
-                $name = (!empty($value['name'])) ? $value['name'] : "";
+            if (is_array($value) && isset($value['type'])
+                && is_a($value['type'], CompositeField::class, true)
+                && isset($value['fields']
+            )) {
+                $name = (!empty($key)) ? $key : "";
 
                 $this->addField(
-                    $this->createCompositeField($key, $value['fields'], $name),
+                    $this->createCompositeField($value['type'], $value['fields'], $name),
                     $fields
                 );
             }
-            
+
             if ($key != 'fields' && is_array($value)) {
                 $fields = $this->generateRecursiveSubFields($value, $fields);
             }
-            
+
             if ($key == 'fields' && is_array($value)) {
                 $fields = $this->processFieldList($value, $fields);
             }
@@ -120,6 +115,14 @@ class FormScaffolder extends CMSFormScaffolder
     protected function processFieldList(array $list, FieldList $fields)
     {
         foreach ($list as $key => $value) {
+            // Check for heading fields
+            if (is_string($value) && in_array(strtolower($value), self::HEADING_LEVELS)) {
+                $fields = $this->addField(
+                    $this->createHeadingField($value, $key),
+                    $fields
+                );
+            }
+
             // If a standard field, get and apply
             if (is_int($key)) {
                 $fields = $this->addField(
@@ -129,11 +132,14 @@ class FormScaffolder extends CMSFormScaffolder
             }
 
             // If this is a type of composite field, setup the field and children
-            if (is_a($key, CompositeField::class, true) && is_array($value) && isset($value['fields'])) {
-                $name = (!empty($value['name'])) ? $value['name'] : "";
+            if (is_array($value) && isset($value['type'])
+                && is_a($value['type'], CompositeField::class, true)
+                && isset($value['fields']
+            )) {
+                $name = (!empty($key)) ? $key : "";
 
                 $this->addField(
-                    $this->createCompositeField($key, $value['fields'], $name),
+                    $this->createCompositeField($value['type'], $value['fields'], $name),
                     $fields
                 );
             }

@@ -41,18 +41,18 @@ class Product extends DataObject
 
     private static $cms_fields = [
         'Root.Main' => [
-            'h2' => 'Product Details',
             'fields' => [
-                \SilverStripe\Forms\FieldGroup::class => [
-                    'name' => 'Title/Stock ID',
+                'ProductDetails' => 'h2',
+                'Title/StockID' => [
+                    'type' => \SilverStripe\Forms\FieldGroup::class,
                     'fields' => [
                         'Title',
                         'StockID'
                     ]
                 ],
                 'Description',
-                'SilverStripe\Forms\CompositeField' => [
-                    'name' => 'Price/Cartons',
+                'Price/Cartons' => [
+                    'type' => 'SilverStripe\Forms\CompositeField',
                     'fields' => [
                         'BasePrice',
                         'ItemsPerCarton',

@@ -3,3 +3,7 @@
 ## 1.0.0
 
 * Initial release
+
+## 1.0.1
+
+* Re-arrange config so that duplicate keys don't get merged
