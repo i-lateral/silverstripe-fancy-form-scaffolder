@@ -7,3 +7,4 @@
 ## 1.0.1
 
 * Re-arrange config so that duplicate keys don't get merged
+* Auto set field labels based on source object config

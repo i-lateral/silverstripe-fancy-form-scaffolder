@@ -239,7 +239,8 @@ class FormScaffolder extends CMSFormScaffolder
             $fieldObject = $this
                 ->obj
                 ->dbObject($field_name)
-                ->scaffoldFormField(null, $this->getParamsArray());
+                ->scaffoldFormField(null, $this->getParamsArray())
+                ->setTitle($this->obj->fieldLabel($field_name));
         }
 
         // If field object not available and is an assotiation
