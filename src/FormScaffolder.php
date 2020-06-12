@@ -125,10 +125,11 @@ class FormScaffolder extends CMSFormScaffolder
 
             // If a standard field, get and apply
             if (is_int($key)) {
-                $fields = $this->addField(
-                    $this->getFieldObject($value),
-                    $fields
-                );
+                $field = $this->getFieldObject($value);
+
+                if (!empty($field)) {
+                    $fields = $this->addField($field, $fields);
+                }
             }
 
             // If this is a type of composite field, setup the field and children

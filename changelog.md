@@ -8,3 +8,7 @@
 
 * Re-arrange config so that duplicate keys don't get merged
 * Auto set field labels based on source object config
+
+## 1.0.2
+
+* Ensure fields are only added if not null
