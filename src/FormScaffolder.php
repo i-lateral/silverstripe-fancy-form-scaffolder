@@ -71,8 +71,6 @@ class FormScaffolder extends CMSFormScaffolder
      */
     protected function generateRecursiveSubFields(array $array, FieldList $fields)
     {
-        $obj = $this->obj;
-
         foreach ($array as $key => $value) {
             // If this is a tab, store it
             if ($this->tabbed && strpos($key, '.')) {
@@ -115,38 +113,66 @@ class FormScaffolder extends CMSFormScaffolder
     protected function processFieldList(array $list, FieldList $fields)
     {
         foreach ($list as $key => $value) {
-            // Check for heading fields
+            $field = null;
+
             if (is_string($value) && in_array(strtolower($value), self::HEADING_LEVELS)) {
-                $fields = $this->addField(
-                    $this->createHeadingField($value, $key),
-                    $fields
-                );
-            }
-
-            // If a standard field, get and apply
-            if (is_int($key)) {
+                // Check for heading fields
+                $field = $this->createHeadingField($value, $key);
+            } else if (is_int($key)) {
+                // If a standard field, get from object and apply
                 $field = $this->getFieldObject($value);
-
-                if (!empty($field)) {
-                    $fields = $this->addField($field, $fields);
-                }
+            } else if (is_array($value) && isset($value['type'])
+            && is_a($value['type'], CompositeField::class, true)
+            && isset($value['fields']
+            )) {
+                // If this is a type of composite field, setup the field and children
+                $name = (!empty($key)) ? $key : "";
+                $field = $this->createCompositeField(
+                    $value['type'],
+                    $value['fields'],
+                    $name
+                );
             }
 
-            // If this is a type of composite field, setup the field and children
-            if (is_array($value) && isset($value['type'])
-                && is_a($value['type'], CompositeField::class, true)
-                && isset($value['fields']
-            )) {
-                $name = (!empty($key)) ? $key : "";
-
-                $this->addField(
-                    $this->createCompositeField($value['type'], $value['fields'], $name),
-                    $fields
-                );
+            if (isset($field)) {
+                $field = $this->processField($field, $value);
+                $fields = $this->addField($field, $fields);
             }
         }
 
         return $fields;
+    }
+
+    /**
+     * Process a given field, setting up methods and then return
+     * 
+     * @param FormField $field
+     * @param mixed $value
+     *
+     * @return FormField
+     */
+    protected function processField(FormField $field, $value)
+    {
+        if (!is_array($value)) {
+            return $field;
+        }
+
+        if (isset($value['methods'])) {
+            foreach ($value['methods'] as $method => $args) {
+                if (!$field->hasMethod($method)) {
+                    continue;
+                }
+
+                if (!is_array($args)) {
+                    $args = [$args];
+                }
+
+                // unpack args and pass them to the called method
+                $field->$method(...$args);
+            }
+        }
+
+        return $field;
     }
 
     /**

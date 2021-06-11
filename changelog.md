@@ -12,3 +12,7 @@
 ## 1.0.2
 
 * Ensure fields are only added if not null
+
+## 1.0.3
+
+* Add the ability to call custom methods when scaffolding a field

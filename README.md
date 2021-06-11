@@ -69,3 +69,26 @@ class Product extends DataObject
     ];
 }
 ```
+
+## Calling field methods on construction
+
+You can also call field methods when the scaffolder constructs/retrieves
+the field.
+
+This can be usefull for performing tasks, such as changing a field title
+or defining a number of columns on a CompositeField. You can do this using
+the following example:
+
+```
+'Title/StockID' => [
+    'type' => \SilverStripe\Forms\CompositeField::class,
+    'fields' => [
+        'Title',
+        'StockID'
+    ],
+    'methods' => [
+        'setTitle' => '',
+        'setColumnCount' => 2
+    ]
+]
+```
